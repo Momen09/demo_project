@@ -100,7 +100,7 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                context.read
+                context.read<ApiModel>().getUserEvents();
               },
               child: const Text('Fetch User Events'),
             ),
