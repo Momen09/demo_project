@@ -1,7 +1,7 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:adaptive_theme/src/adaptive_theme_mode.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../viewmodel/theme_viewmodel.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -13,7 +13,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final themeMode = Provider.of<ThemeViewModel>(context);
     return Scaffold(
       body: Column(
         children: [
@@ -26,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
               inactiveThumbImage:
                   const AssetImage('assets/images/icons8-dark-mode-30.png'),
               // activeColor: Theme.of(context).scaffoldBackgroundColor,
-              value: themeMode.isDarkMode,
+              value:AdaptiveTheme.of(context).mode.isDark,
               title: const Text(
                 'THEME',
                 style: TextStyle(
@@ -40,9 +39,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.white,
                 // size: 50,
               ),
-              onChanged: (bool value) {
+              onChanged: ( value) {
                 setState(() {
-                  themeMode.toggleTheme(value);
+                  value?
+                    AdaptiveTheme.of(context).setDark()
+                  :
+                    AdaptiveTheme.of(context).setLight();
+
                 });
               }),
           const Spacer(),

@@ -57,7 +57,6 @@
 // }
 import 'package:demo_project/model/api_model.dart';
 import 'package:demo_project/view/my_home_page.dart';
-import 'package:demo_project/viewmodel/theme_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -67,40 +66,32 @@ void main() {
   );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  final AdaptiveThemeMode? savedThemeMode;
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
+  const MyApp({super.key, this.savedThemeMode});
 
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ApiModel()),
-        ChangeNotifierProvider(create: (_) => ThemeViewModel()),
       ],
-      child: Consumer<ThemeViewModel>(
-        builder: (context, ThemeViewModel, d) {
-          return AdaptiveTheme(
-          light: ThemeData(
-            brightness: Brightness.light,
-          ),
-          dark: ThemeData(
-            brightness: Brightness.dark,
-          ),
-          initial:ThemeViewModel.isDarkMode? AdaptiveThemeMode.light:AdaptiveThemeMode.dark,
-          builder: (theme, darkTheme) => MaterialApp(
-            theme: theme,
-            darkTheme: darkTheme,
-            home: const MyHomePage(),
-            debugShowCheckedModeBanner: false,
-          ),
-        );
-          },
+      child: AdaptiveTheme(
+      light: ThemeData(
+        brightness: Brightness.light,
       ),
+      dark: ThemeData(
+        brightness: Brightness.dark,
+      ),
+      initial:savedThemeMode ?? AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        theme: theme,
+        darkTheme: darkTheme,
+        home: const MyHomePage(),
+        debugShowCheckedModeBanner: false,
+      ),
+        ),
     );
   }
 }
