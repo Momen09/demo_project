@@ -5,5 +5,6 @@ class ReservationViewModel extends ChangeNotifier {
   List<Reservation> reservations = [];
   Future<void> fetchReservations() async {
 
+
   }
 }

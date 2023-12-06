@@ -1,5 +1,3 @@
-// model.dart
-import 'dart:developer';
 
 import 'package:demo_project/constants/K_Network.dart';
 import 'package:demo_project/model/reservation_model.dart';
@@ -41,6 +39,7 @@ class ApiModel extends ChangeNotifier {
         final data = response.data;
         for (var reservation in data['reservations']) {
           _reservations.add(Reservation.fromJson(reservation));
+
         }
 
         return response.data;
