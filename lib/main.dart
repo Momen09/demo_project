@@ -55,7 +55,6 @@
 //     );
 //   }
 // }
-import 'package:demo_project/view/view.dart';
 import 'package:demo_project/viewmodel/api_viewmodel.dart';
 import 'package:demo_project/view/my_home_page.dart';
 import 'package:demo_project/view/reservation.dart';
@@ -96,8 +95,7 @@ class MyApp extends StatelessWidget {
             home: const MyHomePage(),
             debugShowCheckedModeBanner: false,
             routes: {
-              ReservationScreen.routeName: (context) => const ReservationScreen(),
-              AppScreen.routeName: (context) => const AppScreen(),
+              // ReservationScreen.routeName: (context) => const ReservationScreen(),
             }),
       ),
     );
