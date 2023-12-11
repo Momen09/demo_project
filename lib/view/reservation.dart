@@ -219,7 +219,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                               SizedBox(
                                 height: size.height * 0.02,
                               ),
-                              Gallery(size),
+                              // Gallery(size),
                               SizedBox(
                                 height: size.height * 0.08,
                               ),
@@ -256,27 +256,27 @@ class _ReservationScreenState extends State<ReservationScreen> {
     );
   }
 
-  SizedBox Gallery(Size size) {
-    return SizedBox(
-                              height: size.height * 0.3,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemCount: galleryPhoto.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    margin: const EdgeInsets.only(right: 10),
-                                    child: Image.network(
-                                      GalleryPhoto(context).getPhotoList()[index],
-                                      width: size.width * 0.5,
-                                      height: size.height * 0.3,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-  }
+  // SizedBox Gallery(Size size) {
+  //   return SizedBox(
+  //                             height: size.height * 0.3,
+  //                             child: ListView.builder(
+  //                               scrollDirection: Axis.horizontal,
+  //                               shrinkWrap: true,
+  //                               itemCount: galleryPhoto.length,
+  //                               itemBuilder: (context, index) {
+  //                                 return Container(
+  //                                   margin: const EdgeInsets.only(right: 10),
+  //                                   child: Image.network(
+  //                                     GalleryPhoto(context).getPhotoList(),
+  //                                     width: size.width * 0.5,
+  //                                     height: size.height * 0.3,
+  //                                     fit: BoxFit.cover,
+  //                                   ),
+  //                                 );
+  //                               },
+  //                             ),
+  //                           );
+  // }
 
   Container addressContainer(ApiViewModel provider, Size size) {
     double latitude =

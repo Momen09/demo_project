@@ -54,11 +54,6 @@ class SecList {
   }
 }
 
- List galleryPhoto= [
-   'assets/images/1.jpg',
-   'assets/images/2.jpg',
-   'assets/images/3.jpg',
- ];
 class GalleryPhoto {
   late BuildContext context;
 
