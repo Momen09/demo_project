@@ -1,11 +1,10 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:demo_project/view/reservation.dart';
+import 'package:demo_project/view/view.dart';
 import 'package:demo_project/viewmodel/api_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal_bottom_sheet;
-
 
 import '../constants/K_Network.dart';
 
@@ -23,9 +22,9 @@ class _MyHomePageState extends State<MyHomePage> {
     final bool _isDark = AdaptiveTheme.of(context).isDefault;
     SizeScreen sizeScreen = SizeScreen(context);
     Size size = sizeScreen.getScreenSize;
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
           children: [
             const SizedBox(
               height: 20,
@@ -91,22 +90,12 @@ class _MyHomePageState extends State<MyHomePage> {
 ElevatedButton Button1(BuildContext context, bool _isDark, Size size) {
   return ElevatedButton(
     onPressed: () {
-      modal_bottom_sheet.showCupertinoModalBottomSheet(
-          context: context,
-          expand: true,
-          enableDrag: false,
-          builder: (context) {
-            return Container(
-               height:MediaQuery.of(context).size.height,
-              decoration:  const BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.only(
-                  topRight:Radius.circular(12) ,
-                  topLeft:Radius.circular(12) ,
-                )
-              ),
-                child: ReservationScreen());
-          });
+
+        showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return ReservationScreen();
+            });
     },
     style: ElevatedButton.styleFrom(
       backgroundColor: _isDark ? Colors.black : Colors.white,
@@ -186,6 +175,7 @@ class button2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
+        Navigator.pushNamed(context,AppScreen.routeName);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
