@@ -10,22 +10,22 @@ import '../../constants/K_Network.dart';
 import '../../model/reservation_model.dart';
 
 class ReservationWidget extends StatefulWidget {
-  const ReservationWidget(
-      {super.key,
-      required this.stays,
-      required this.tickets,
-      required this.startDate,
-      required this.endDate});
+  const ReservationWidget({
+    super.key,
+    required this.reservation,
+  });
 
-  final List<Stay> stays;
-  final List<UserTicket> tickets;
-  final DateTime startDate;
-  final DateTime endDate;
+  final Reservation reservation;
+
   @override
   State<ReservationWidget> createState() => _ReservationWidgetState();
 }
 
 class _ReservationWidgetState extends State<ReservationWidget> {
+
+
+  Reservation get reservation => widget.reservation;
+
   @override
   Widget build(BuildContext context) {
     SizeScreen sizeScreen = SizeScreen(context);
@@ -33,7 +33,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
     bool isDefault = AdaptiveTheme.of(context).isDefault;
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: widget.stays.length,
+        itemCount: widget.reservation.stays!.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return Padding(
@@ -46,30 +46,67 @@ class _ReservationWidgetState extends State<ReservationWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _textWidget(
-                    widget.stays![index].name,
+                    widget.reservation.stays![index].name,
                     Colors.grey,
                     15,
                     false,
                   ),
                   _firstGrid(isDefault),
-                  SizedBox(height:size.height*0.03 ,),
-                  _textWidget('Location:', isDefault?Colors.black:Colors.white, 25, true,),
-                  SizedBox(height:size.height*0.03 ,),
-                  ...widget.stays.map((e) => StayWidget(stay: e)),
-                  SizedBox(height:size.height*0.03 ,),
-                  _textWidget('Ticket:', isDefault?Colors.black:Colors.white, 25, true,),
-                  SizedBox(height:size.height*0.03 ,),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  _textWidget(
+                    'Location:',
+                    isDefault ? Colors.black : Colors.white,
+                    25,
+                    true,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  StayWidget(stay: reservation.stays![index]),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  _textWidget(
+                    'Ticket:',
+                    isDefault ? Colors.black : Colors.white,
+                    25,
+                    true,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
                   // ...widget.stays[index].rooms!.map((e) => RoomWidget(room: e)),
-                  SizedBox(height:size.height*0.03 ,),
-                  ...widget.tickets.map((e) => UserTicketWidget(userTicket: e)),
-                  SizedBox(height: size.height*0.1,),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  ...widget.reservation.userTickets!.map((e) => UserTicketWidget(userTicket: e)),
+                  SizedBox(
+                    height: size.height * 0.1,
+                  ),
                   dotLine(size),
-                  SizedBox(height:size.height*0.03 ,),
-                  _textWidget('Room reservation 01', isDefault?Colors.black:Colors.white, 25, true,),
-                  SizedBox(height:size.height*0.03 ,),
-                  _textWidget('Guests:', isDefault?Colors.black:Colors.white, 25, true,),
-                  SizedBox(height:size.height*0.03 ,),
-                  ...widget.stays[index].rooms![index].guests!.map((e) => GuestWidget(guest: e,)),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  _textWidget(
+                    'Room reservation 01',
+                    isDefault ? Colors.black : Colors.white,
+                    25,
+                    true,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+                  _textWidget(
+                    'Guests:',
+                    isDefault ? Colors.black : Colors.white,
+                    25,
+                    true,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
                 ],
               ),
             ),
@@ -101,7 +138,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
               true,
             ),
             subtitle: _textWidget(
-              DateFormat("d-MM-yyyy").format(widget.startDate),
+              DateFormat("d-MM-yyyy").format(widget.reservation.startDate!),
               isDefault ? Colors.black : Colors.grey,
               15,
               false,
@@ -112,16 +149,13 @@ class _ReservationWidgetState extends State<ReservationWidget> {
     );
   }
 
-
-
-  Widget _ticket1 (Size size,isDefault,index){
-
+  Widget _ticket1(Size size, isDefault, index) {
     return Container(
       height: size.height * 0.1,
       width: size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: isDefault ?Colors.grey.shade400:Colors.grey,
+        color: isDefault ? Colors.grey.shade400 : Colors.grey,
         borderRadius: BorderRadius.circular(0),
       ),
       child: Row(
@@ -135,8 +169,8 @@ class _ReservationWidgetState extends State<ReservationWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _textWidget(
-                '${widget.stays[index].rooms![index].guests![index].firstName} '
-                    '${widget.stays[index].rooms![index].guests![index].firstName}',
+                '${reservation.stays![index].rooms![index].guests![index].firstName} '
+                '${reservation.stays![index].rooms![index].guests![index].firstName}',
                 isDefault ? Colors.black : Colors.white,
                 20,
                 true,
@@ -153,9 +187,7 @@ class _ReservationWidgetState extends State<ReservationWidget> {
       ),
     );
   }
-
 }
-
 
 Widget _textWidget(
   var text,

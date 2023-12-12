@@ -4,7 +4,6 @@ import 'package:demo_project/constants/K_Network.dart';
 import 'package:demo_project/constants/list.dart';
 import 'package:demo_project/view/loading_screen.dart';
 import 'package:demo_project/view/widget/reservation_widget.dart';
-import 'package:fdottedline_nullsafety/fdottedline__nullsafety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +20,6 @@ class ReservationScreen extends StatefulWidget {
 }
 
 class _ReservationScreenState extends State<ReservationScreen> {
-
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 1))
@@ -70,7 +68,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
           );
         }
         if (provider.viewState == ViewState.loaded) {
-          return _ReservationWidgetScreen(provider.reservations.first);
+          return _ReservationWidgetScreen(provider.reservations);
           // ListView(
           //   children: [
           //     Image.network(
@@ -516,34 +514,18 @@ class _ReservationScreenState extends State<ReservationScreen> {
   //     ),
   //   );
   // }
-  Widget _ReservationWidgetScreen(Reservation reservation) {
-    return ListView(
-      children: [
-        const SizedBox(
-          height: 24,
-        ),
-        ListTile(
-          title: Text(
-            'Hotel Check-In',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-
-        ReservationWidget(
-          stays: reservation.stays!,
-          tickets: reservation.userTickets!,
-          startDate: reservation.startDate!,
-          endDate: reservation.endDate!,
-        ),
-      ],
+  Widget _ReservationWidgetScreen(List<Reservation> reservations) {
+    return ListView.separated(
+      separatorBuilder: (context, index) =>  Container(
+        color: Colors.red,
+        height: 10,
+      ),
+      itemCount: reservations.length,
+      itemBuilder: (context, index) {
+        return ReservationWidget(
+          reservation: reservations[index],
+        );
+      },
     );
   }
 }
-
-
