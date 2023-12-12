@@ -4,7 +4,7 @@ import 'package:demo_project/viewmodel/api_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as modal_bottom_sheet;
 import '../constants/K_Network.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final apiViewModel = Provider.of<ApiViewModel>(context);
-    final bool _isDark = AdaptiveTheme.of(context).isDefault;
+    final bool isDark = AdaptiveTheme.of(context).isDefault;
     SizeScreen sizeScreen = SizeScreen(context);
     Size size = sizeScreen.getScreenSize;
     return SafeArea(
@@ -38,16 +38,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: Text(
                     'THEME',
                     style: TextStyle(
-                      color: _isDark ? Colors.black : Colors.white,
+                      color: isDark ? Colors.black : Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   secondary: Icon(
-                    _isDark
+                    isDark
                         ? Icons.light_mode_outlined
                         : Icons.dark_mode_outlined,
-                    color: _isDark ? Colors.black : Colors.white,
+                    color: isDark ? Colors.black : Colors.white,
                     // size: 50,
                   ),
                   onChanged: (value) {
@@ -58,24 +58,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   });
             }),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   Button1(
                     context,
-                    _isDark,
+                    isDark,
                     size,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  button2(size: size, isDark: _isDark),
+                  button2(size: size, isDark: isDark),
                   const SizedBox(
                     height: 10,
                   ),
-                  button3(size: size, isDark: _isDark),
+                  button3(size: size, isDark: isDark),
                 ],
               ),
             )
@@ -86,29 +86,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-ElevatedButton Button1(BuildContext context, bool _isDark, Size size) {
+Widget Button1(BuildContext context, bool isDark, Size size) {
   return ElevatedButton(
     onPressed: () {
 
-        showModalBottomSheet(
+      modal_bottom_sheet.showCupertinoModalBottomSheet(
             context: context,
             builder: (context) {
-              return ReservationScreen();
+              return const ReservationScreen();
             });
     },
     style: ElevatedButton.styleFrom(
-      backgroundColor: _isDark ? Colors.black : Colors.white,
+      backgroundColor: isDark ? Colors.black : Colors.white,
       // primary: Colors.white,
       minimumSize: Size.fromHeight(size.height * 0.1),
       side: BorderSide(
-        color: _isDark ? Colors.black : Colors.white,
+        color: isDark ? Colors.black : Colors.white,
       ),
       shape: const RoundedRectangleBorder(),
     ),
     child: Text(
       'OPEN RESERVATION',
       style: TextStyle(
-        color: _isDark ? Colors.white : Colors.black,
+        color: isDark ? Colors.white : Colors.black,
         fontSize: 15,
         fontWeight: FontWeight.bold,
       ),
@@ -131,15 +131,6 @@ class button3 extends StatelessWidget {
     final apiViewModel = Provider.of<ApiViewModel>(context);
     return ElevatedButton(
       onPressed: () {
-        // print(apiViewModel.reservations.first.endDate.toString());
-        // print(apiViewModel.reservations.first.endDate.toString());
-        // apiViewModel.reservations.last.stays?.forEach((element) {
-        //   if (element.rooms != null && element.rooms!.isNotEmpty) {
-        //     print(element.rooms!.last.stayName);
-        //   } else {
-        //     print('No rooms found for this stay.');
-        //   }
-        // });
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,

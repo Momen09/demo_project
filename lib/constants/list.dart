@@ -54,18 +54,6 @@ class SecList {
   }
 }
 
-class GalleryPhoto {
-  late BuildContext context;
-
-  GalleryPhoto (this.context);
-  List<Image> getPhotoList() {
-    return [
-      Image.network(Provider.of<ApiViewModel>(context).reservations.first.stays!.first.stayImages!.first),
-      Image.network(Provider.of<ApiViewModel>(context).reservations.first.stays!.first.stayImages!.last),
-      
-    ];
-  }
-}
 
 
 

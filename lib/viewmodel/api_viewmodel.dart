@@ -1,13 +1,10 @@
 import 'dart:developer';
-
 import 'package:demo_project/constants/K_Network.dart';
 import 'package:demo_project/model/reservation_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:provider/provider.dart';
 
-import 'map_viewmodel.dart';
 
 enum ViewState { initial, loading, loaded, error }
 
@@ -68,12 +65,5 @@ class ApiViewModel extends ChangeNotifier {
   }
 
 
- Future <void> openGoogleMapsForFirstStay(BuildContext context) async {
-  double latitude =await double.parse(reservations!.first.stays!.first.lat!);
-  double longitude =await double.parse(reservations!.first.stays!.first.lng!);
-
-  ApiUtility.openGoogleMaps(latitude, longitude);
-  notifyListeners();
-  }
 
 }
