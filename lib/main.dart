@@ -55,12 +55,17 @@
 //     );
 //   }
 // }
-import 'package:demo_project/viewmodel/api_viewmodel.dart';
+import 'package:demo_project/view/map_screen.dart';
 import 'package:demo_project/view/my_home_page.dart';
 import 'package:demo_project/view/reservation.dart';
+import 'package:demo_project/viewmodel/api_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+
+import 'constants/connectivity.dart';
+import 'constants/enum.dart';
+
 
 void main() {
   runApp(
@@ -71,15 +76,16 @@ void main() {
 class MyApp extends StatelessWidget {
   final AdaptiveThemeMode? savedThemeMode;
 
-  const MyApp({super.key, this.savedThemeMode});
+  const MyApp({key, this.savedThemeMode});
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ApiViewModel()),
-
+        ChangeNotifierProvider(create: (_) => ReservationViewModel()),
+        StreamProvider(
+            create: (context) => NetworkService().controller.stream,
+            initialData: NetworkStatus.online)
       ],
       child: AdaptiveTheme(
         light: ThemeData(
@@ -95,8 +101,12 @@ class MyApp extends StatelessWidget {
             home: const MyHomePage(),
             debugShowCheckedModeBanner: false,
             routes: {
-              ReservationScreen.routeName: (context) => const ReservationScreen(),
-            }),
+              ReservationScreen.routeName: (context) =>
+              const ReservationScreen(),
+              MapScreen.routeName: (context) =>
+              const MapScreen(),
+            }
+        ),
       ),
     );
   }

@@ -1,14 +1,14 @@
+import 'dart:convert';
 import 'dart:developer';
-import 'package:demo_project/constants/K_Network.dart';
-import 'package:demo_project/model/reservation_model.dart';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:demo_project/constants/Network.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import '../model/reservation_model.dart';
+import '../constants/enum.dart';
 
-
-enum ViewState { initial, loading, loaded, error }
-
-class ApiViewModel extends ChangeNotifier {
+class ReservationViewModel extends ChangeNotifier {
   ViewState _viewState = ViewState.initial;
 
   ViewState get viewState => _viewState;
@@ -17,40 +17,55 @@ class ApiViewModel extends ChangeNotifier {
 
   List<Reservation> get reservations => _reservations;
 
-  final Dio dio = Dio();
+  Future<void> reservationData(response) async {
+    final data =response;
+    for (var reservation in data['reservations']) {
+      _reservations.add(Reservation.fromJson(reservation));
 
-  Future<void> getUserEvents() async {
-    const url = ApiUrl.apiUrl;
+    }
+    _viewState = ViewState.loaded;
+    return;
+  }
 
+  Future<void> fetchData(apiUrl) async {
+    _viewState = ViewState.loading;
     try {
-      _viewState = ViewState.loading;
-      notifyListeners();
-      final response = await dio.get(
-        url,
-        options: Options(
-          headers: {
-            'content-type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ${KNetwork.token}',
-          },
-        ),
-      );
-      log('API Response: $response');
-      if (response.statusCode == 200) {
-        final data = response.data;
-        for (var reservation in data['reservations']) {
-          _reservations.add(Reservation.fromJson(reservation));
+      var connectivityResult = Connectivity().checkConnectivity();
+      if (connectivityResult == ConnectivityResult.none) {
+        dynamic cachedData = NetworkRequests.DioNetwork();
+        if (cachedData != null) {
+          await reservationData(cachedData);
+        } else {
+          _viewState = ViewState.error;
         }
-        _viewState = ViewState.loaded;
       } else {
-        _viewState = ViewState.error;
-        throw Exception(
-            'Failed to fetch user events. Status: ${response.statusCode}');
+        await fetchAndCacheData();
       }
     } catch (e) {
-      throw Exception('Error: ${e.toString()}');
+      _viewState = ViewState.error;
+      log("Error: $e");
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future<void> fetchAndCacheData() async {
+    try {
+      final response = await NetworkRequests.DioNetwork();
+      final jsonString = jsonEncode(response.data);
+      log("API Response: $jsonString");
+      await reservationData(response.data);
+    } catch (e) {
+      if (e is DioError) {
+        if (e.response?.statusCode == 401) {
+          log('Authentication error: Unauthorized');
+          // Handle unauthorized error, e.g., redirect to login screen
+        } else {
+          log('DioError: $e');
+        }
+      } else {
+        log('Unexpected error: $e');
+      }
     }
   }
 
@@ -63,7 +78,4 @@ class ApiViewModel extends ChangeNotifier {
     _reservations = reservations;
     notifyListeners();
   }
-
-
-
 }

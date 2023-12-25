@@ -1,20 +1,17 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class LoadingScreen extends StatefulWidget {
+class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
 
   @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
-}
-
-class _LoadingScreenState extends State<LoadingScreen> {
-  @override
   Widget build(BuildContext context) {
+    bool isDefault = AdaptiveTheme.of(context).isDefault;
     return SafeArea(child: Scaffold(
-      body: Center(child: LoadingAnimationWidget.inkDrop(
-        color: Colors.white,
-        size: 200,
+      body: Center(child: LoadingAnimationWidget.bouncingBall(
+        color: isDefault?Colors.black:Colors.white,
+        size: 100,
       ),
       ),),
     );
