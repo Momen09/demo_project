@@ -59,6 +59,7 @@ import 'package:demo_project/view/map_screen.dart';
 import 'package:demo_project/view/my_home_page.dart';
 import 'package:demo_project/view/reservation.dart';
 import 'package:demo_project/viewmodel/api_viewmodel.dart';
+import 'package:demo_project/viewmodel/current_pos_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -83,6 +84,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ReservationViewModel()),
+        ChangeNotifierProvider(create: (_) => CurrentPosViewModel()),
+
         StreamProvider(
             create: (context) => NetworkService().controller.stream,
             initialData: NetworkStatus.online)
@@ -104,7 +107,7 @@ class MyApp extends StatelessWidget {
               ReservationScreen.routeName: (context) =>
               const ReservationScreen(),
               MapScreen.routeName: (context) =>
-              const MapScreen(),
+               MapScreen(),
             }
         ),
       ),

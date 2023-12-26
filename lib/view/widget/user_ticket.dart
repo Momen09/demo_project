@@ -4,6 +4,7 @@ import 'package:coupon_uikit/coupon_uikit.dart';
 import 'package:demo_project/model/reservation_model.dart';
 import 'package:fdottedline_nullsafety/fdottedline__nullsafety.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import '../../constants/K_Network.dart';
 
 class UserTicketWidget extends StatelessWidget {
@@ -16,17 +17,23 @@ class UserTicketWidget extends StatelessWidget {
     SizeScreen sizeScreen = SizeScreen(context);
     Size size = sizeScreen.getScreenSize;
     bool isDefault = AdaptiveTheme.of(context).isDefault;
-    return CouponCard(
-      curvePosition: size.height * 0.09,
-      decoration: BoxDecoration(
-        color: isDefault ? Colors.grey.shade300 : Colors.grey,
-        borderRadius: BorderRadius.circular(0),
-      ),
-      firstChild: Column(
-        children: [
-          _guestWidget(isDefault),
-        ],
-      ), secondChild: _ticketDetailsWidget(isDefault,context),
+    return Column(
+      children: [
+        CouponCard(
+          height: size.height*0.2,
+          curvePosition: size.height * 0.09,
+          decoration: BoxDecoration(
+            color: isDefault ? Colors.grey.shade300 : Colors.grey,
+            borderRadius: BorderRadius.circular(0),
+          ),
+          firstChild: Column(
+            children: [
+              _guestWidget(isDefault),
+            ],
+          ), secondChild: _ticketDetailsWidget(isDefault,context),
+        ),
+
+      ],
     );
   }
 
@@ -52,6 +59,7 @@ class UserTicketWidget extends StatelessWidget {
   }
   Widget _ticketDetailsWidget(isDefault,context){
     return Container(
+      height: 30,
       width: double.maxFinite,
       decoration:  BoxDecoration(
         border: Border(
@@ -68,6 +76,7 @@ class UserTicketWidget extends StatelessWidget {
               _textWidget(userTicket!.ticketTypeName,isDefault? Colors.black:Colors.grey.shade600, 18, false),
             ],
           ),
+          const Gap(10),
           Row(
             children: [
               _textWidget('Seat : ',isDefault ?Colors.black:Colors.white, 18, true),

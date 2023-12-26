@@ -2,7 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import '../../constants/K_Network.dart';
 import '../../model/reservation_model.dart';
-import '../../viewmodel/map_viewmodel.dart';
+import '../../viewmodel/address_viewmodel.dart';
 
 class StayWidget extends StatelessWidget {
   StayWidget({super.key, required this.stay});
