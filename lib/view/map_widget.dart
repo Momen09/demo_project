@@ -99,19 +99,102 @@
 // // }
 // }
 
+import 'dart:async';
+import 'package:demo_project/constants/enum.dart';
+import 'package:demo_project/view/loading_screen.dart';
+import 'package:demo_project/viewmodel/tracking_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
-class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
-    static const routeName = 'MapScreen';
+import '../constants/K_Network.dart';
+
+class MapWidget extends StatefulWidget {
+  const MapWidget({super.key});
+
+  static const routeName = 'MapScreen';
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
+  State<MapWidget> createState() => _MapWidgetState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapWidgetState extends State<MapWidget> {
+  late TrackingViewModel _trackingViewModel;
+
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 0)).then((value) {
+      _trackingViewModel =
+          Provider.of<TrackingViewModel>(context, listen: false);
+      _trackingViewModel.getCurrentLocation();
+       _trackingViewModel.polylines;
+    });
+    super.initState();
+  }
+
+  LatLng source = const LatLng(30.1152, 31.3412);
+  LatLng destination = const LatLng(30.099170, 31.384760);
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Consumer<TrackingViewModel>(
+        builder: (context, trackingViewModel, child) {
+      LocationData? currentLocation = trackingViewModel.currentLocation;
+      List<LatLng> locationHistory = trackingViewModel.locationHistory;
+      if (trackingViewModel.viewState == ViewState.initial ||
+          trackingViewModel.viewState == ViewState.loading) {
+        return const LoadingScreen();
+      }else{
+        return Scaffold(
+          appBar: AppBar(),
+          drawer: Drawer(
+            child: ListView.builder(
+              itemCount: locationHistory.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int index) {
+                LatLng location = locationHistory[index];
+                return ListTile(
+                  title: Text('Location $index'),
+                  subtitle: Text(
+                      'Latitude: ${location.latitude}, Longitude: ${location.longitude}'),
+                );
+              },
+            ),
+          ),
+          body: GoogleMap(
+            // onTap: (LatLng latlng) {
+            //   setState(() {
+            //     Marker(
+            //         markerId: MarkerId('${latlng.latitude}'),
+            //         position: LatLng(latlng.latitude, latlng.longitude));
+            //   });
+            // },
+            polylines: Set<Polyline>.of(trackingViewModel.polylines.values),
+            markers: {
+              Marker(
+                  markerId: const MarkerId('current'),
+                  position: LatLng(
+                      currentLocation!.latitude!, currentLocation!.longitude!)),
+              Marker(markerId: const MarkerId('source'), position: source),
+              Marker(
+                  markerId: const MarkerId('destination'),
+                  position: destination),
+            },
+            mapType: MapType.normal,
+            initialCameraPosition: CameraPosition(
+              target: LatLng(
+                  currentLocation!.latitude!, currentLocation!.longitude!),
+              zoom: 13.5,
+            ),
+            onMapCreated: (controllerr) {
+              trackingViewModel.controller.complete(controllerr);
+              // _getPolyline();
+            },
+          ),
+        );
+      }
+    });
   }
 }

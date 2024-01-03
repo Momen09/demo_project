@@ -13,9 +13,10 @@ class ReservationViewModel extends ChangeNotifier {
 
   ViewState get viewState => _viewState;
 
+  List<Reservation> get reservations => _reservations;
+
   List<Reservation> _reservations = [];
 
-  List<Reservation> get reservations => _reservations;
 
   Future<void> reservationData(response) async {
     final data =response;

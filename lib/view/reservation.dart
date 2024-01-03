@@ -39,9 +39,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
         automaticallyImplyLeading: false,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(15),
-              topLeft: Radius.circular(15),
-            )),
+          topRight: Radius.circular(15),
+          topLeft: Radius.circular(15),
+        )),
         title: Center(
           child: Container(
             height: size.height * 0.01,
@@ -60,10 +60,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
         ),
       ),
       body: Consumer<ReservationViewModel>(builder: (context, provider, child) {
-        if (provider.viewState == ViewState.loading) {
-          return const Center(
-            child: LoadingScreen(),
-          );
+        if (provider.viewState == ViewState.initial ||
+            provider.viewState == ViewState.loading) {
+          return const LoadingScreen();
         }
         if (provider.viewState == ViewState.loaded) {
           return _ReservationWidgetScreen(provider.reservations);
@@ -85,7 +84,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
             width: size.width,
             child: InstaImageViewer(
                 child: PhotoView(
-                    imageProvider: AssetImage('${KNetwork.photo}2.jpg')))),
+                    imageProvider: const AssetImage('${KNetwork.photo}2.jpg')))),
         const Gap(20),
         ListTile(
           title: Text(

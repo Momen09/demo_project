@@ -1,5 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:demo_project/view/map_screen.dart';
+import 'package:demo_project/view/map_widget.dart';
 import 'package:demo_project/view/reservation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -171,8 +171,9 @@ class button2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        Navigator.pushNamed(context, MapScreen.routeName);
+      onPressed: () async {
+        Navigator.pushNamed(context, MapWidget.routeName);
+
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,

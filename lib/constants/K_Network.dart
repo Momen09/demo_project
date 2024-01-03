@@ -9,6 +9,7 @@ class KNetwork {
       'XEjhcNVh5uNRtxtvxZtpECrl72_22T4he3LbqISMNHzVh5eprIKIFLt_pM7cyRKt3Njf8I89CLnq5nU'
       'piDHnMMForamKq9jubmiYPOHpFvijEE3-jusRk0F1T32zMY_0AELXnpqhbbx6HtmMdxBahnrUNy'
       'znacdVwaSrNus8vX01N8zEcfRvkRzYuqjnZXr9jrm2iriHq80iicUG99GQ';
+
   static const locationPhoto = '${photo}dark.png';
 
   static const mapToken =
@@ -18,6 +19,8 @@ class KNetwork {
       'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
 
   static const mapId = 'mapbox/streets-v12';
+
+  static const google_api_key = 'AIzaSyCKfTHmnbKYozxH7WQ6b36s7MBMPdr2i8k';
 }
 
 class SizeScreen {

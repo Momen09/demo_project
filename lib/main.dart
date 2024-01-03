@@ -55,11 +55,12 @@
 //     );
 //   }
 // }
-import 'package:demo_project/view/map_screen.dart';
+import 'package:demo_project/view/map_widget.dart';
 import 'package:demo_project/view/my_home_page.dart';
 import 'package:demo_project/view/reservation.dart';
 import 'package:demo_project/viewmodel/api_viewmodel.dart';
 import 'package:demo_project/viewmodel/current_pos_viewmodel.dart';
+import 'package:demo_project/viewmodel/tracking_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -69,6 +70,7 @@ import 'constants/enum.dart';
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const MyApp(),
   );
@@ -84,7 +86,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ReservationViewModel()),
-        ChangeNotifierProvider(create: (_) => CurrentPosViewModel()),
+        ChangeNotifierProvider(create: (_) => TrackingViewModel()),
 
         StreamProvider(
             create: (context) => NetworkService().controller.stream,
@@ -106,8 +108,8 @@ class MyApp extends StatelessWidget {
             routes: {
               ReservationScreen.routeName: (context) =>
               const ReservationScreen(),
-              MapScreen.routeName: (context) =>
-               MapScreen(),
+              MapWidget.routeName: (context) =>
+               MapWidget(),
             }
         ),
       ),

@@ -9,7 +9,7 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDefault = AdaptiveTheme.of(context).isDefault;
     return SafeArea(child: Scaffold(
-      body: Center(child: LoadingAnimationWidget.bouncingBall(
+      body: Center(child: LoadingAnimationWidget.fourRotatingDots(
         color: isDefault?Colors.black:Colors.white,
         size: 100,
       ),
