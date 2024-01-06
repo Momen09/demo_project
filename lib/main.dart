@@ -55,22 +55,46 @@
 //     );
 //   }
 // }
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:demo_project/view/map_widget.dart';
 import 'package:demo_project/view/my_home_page.dart';
 import 'package:demo_project/view/reservation.dart';
 import 'package:demo_project/viewmodel/api_viewmodel.dart';
-import 'package:demo_project/viewmodel/current_pos_viewmodel.dart';
+import 'package:demo_project/viewmodel/firebase_api_viewmodel.dart';
 import 'package:demo_project/viewmodel/tracking_viewmodel.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-
 import 'constants/connectivity.dart';
 import 'constants/enum.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyAWp-FSKG17W__ptIib7tE6WZRPrKaWtEA',
+          appId: '1:811505743152:android:e6c9d5324b8beee02584f5',
+          messagingSenderId: '811505743152',
+          projectId: 'fir-43577'));
+  await FirebaseApi().initNotifications();
+  await AwesomeNotifications().initialize(null, [
+    NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'basic_channel',
+        channelName: 'basic notification',
+        channelDescription: 'test notification channel'),
+  ], channelGroups: [
+    NotificationChannelGroup(
+        channelGroupKey: 'basic_channel_group',
+        channelGroupName: 'basic group'),
+  ]);
+  bool isAllowedToSendNotification =
+      await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowedToSendNotification) {
+    AwesomeNotifications().requestPermissionToSendNotifications();
+  }
   runApp(
     const MyApp(),
   );
@@ -87,7 +111,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ReservationViewModel()),
         ChangeNotifierProvider(create: (_) => TrackingViewModel()),
-
+        // ChangeNotifierProvider(create: (_) => FirebaseApi()),
         StreamProvider(
             create: (context) => NetworkService().controller.stream,
             initialData: NetworkStatus.online)
@@ -107,11 +131,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             routes: {
               ReservationScreen.routeName: (context) =>
-              const ReservationScreen(),
-              MapWidget.routeName: (context) =>
-               MapWidget(),
-            }
-        ),
+                  const ReservationScreen(),
+              MapWidget.routeName: (context) => MapWidget(),
+            }),
       ),
     );
   }

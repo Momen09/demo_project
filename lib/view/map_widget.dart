@@ -109,8 +109,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/K_Network.dart';
-
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
 
@@ -150,51 +148,62 @@ class _MapWidgetState extends State<MapWidget> {
         return Scaffold(
           appBar: AppBar(),
           drawer: Drawer(
-            child: ListView.builder(
-              itemCount: locationHistory.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, int index) {
-                LatLng location = locationHistory[index];
-                return ListTile(
-                  title: Text('Location $index'),
-                  subtitle: Text(
-                      'Latitude: ${location.latitude}, Longitude: ${location.longitude}'),
-                );
-              },
-            ),
+            child: _historyList(locationHistory),
           ),
-          body: GoogleMap(
-            // onTap: (LatLng latlng) {
-            //   setState(() {
-            //     Marker(
-            //         markerId: MarkerId('${latlng.latitude}'),
-            //         position: LatLng(latlng.latitude, latlng.longitude));
-            //   });
-            // },
-            polylines: Set<Polyline>.of(trackingViewModel.polylines.values),
-            markers: {
-              Marker(
-                  markerId: const MarkerId('current'),
-                  position: LatLng(
-                      currentLocation!.latitude!, currentLocation!.longitude!)),
-              Marker(markerId: const MarkerId('source'), position: source),
-              Marker(
-                  markerId: const MarkerId('destination'),
-                  position: destination),
-            },
-            mapType: MapType.normal,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(
-                  currentLocation!.latitude!, currentLocation!.longitude!),
-              zoom: 13.5,
-            ),
-            onMapCreated: (controllerr) {
-              trackingViewModel.controller.complete(controllerr);
-              // _getPolyline();
-            },
-          ),
+          body: _mapView(trackingViewModel, currentLocation),
         );
       }
     });
+  }
+
+
+
+
+  GoogleMap _mapView(TrackingViewModel trackingViewModel, LocationData? currentLocation) {
+    return GoogleMap(
+          // onTap: (LatLng latlng) {
+          //   setState(() {
+          //     Marker(
+          //         markerId: MarkerId('${latlng.latitude}'),
+          //         position: LatLng(latlng.latitude, latlng.longitude));
+          //   });
+          // },
+          polylines: Set<Polyline>.of(trackingViewModel.polylines.values),
+          markers: {
+            Marker(
+                markerId: const MarkerId('current'),
+                position: LatLng(
+                    currentLocation!.latitude!, currentLocation!.longitude!)),
+            Marker(markerId: const MarkerId('source'), position: source),
+            Marker(
+                markerId: const MarkerId('destination'),
+                position: destination),
+          },
+          mapType: MapType.normal,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(
+                currentLocation!.latitude!, currentLocation!.longitude!),
+            zoom: 13.5,
+          ),
+          onMapCreated: (controllerr) {
+            trackingViewModel.controller.complete(controllerr);
+            // _getPolyline();
+          },
+        );
+  }
+
+  Widget _historyList(List<LatLng> locationHistory) {
+    return ListView.builder(
+            itemCount: locationHistory.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              LatLng location = locationHistory[index];
+              return ListTile(
+                title: Text('Location $index'),
+                subtitle: Text(
+                    'Latitude: ${location.latitude}, Longitude: ${location.longitude}'),
+              );
+            },
+          );
   }
 }

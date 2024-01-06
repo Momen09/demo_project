@@ -1,11 +1,13 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:demo_project/view/map_widget.dart';
 import 'package:demo_project/view/reservation.dart';
+import 'package:demo_project/view/widget/notification_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart'
-as modal_bottom_sheet;
+    as modal_bottom_sheet;
 import '../constants/K_Network.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -44,15 +46,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  button2(size: size, isDark: isDark, title: 'SHOW IOS TICKET',),
+                  button2(
+                    size: size,
+                    isDark: isDark,
+                    title: 'SHOW IOS TICKET',
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  button2(size: size, isDark: isDark, title: 'SHOW MAP',),
+                  button2(
+                    size: size,
+                    isDark: isDark,
+                    title: 'SHOW MAP',
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
                   button3(size: size, isDark: isDark),
+                  const NotificationWidget(),
+                  const Gap(10),
                 ],
               ),
             )
@@ -66,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return SwitchListTile(
         activeThumbImage: const AssetImage('assets/images/img.png'),
         inactiveThumbImage:
-        const AssetImage('assets/images/icons8-dark-mode-30.png'),
+            const AssetImage('assets/images/icons8-dark-mode-30.png'),
         // activeColor: Theme.of(context).scaffoldBackgroundColor,
         value: AdaptiveTheme.of(context).mode.isDark,
         title: Text(
@@ -78,9 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         secondary: Icon(
-          isDark
-              ? Icons.light_mode_outlined
-              : Icons.dark_mode_outlined,
+          isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
           color: isDark ? Colors.black : Colors.white,
           // size: 50,
         ),
@@ -173,7 +183,6 @@ class button2 extends StatelessWidget {
     return ElevatedButton(
       onPressed: () async {
         Navigator.pushNamed(context, MapWidget.routeName);
-
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
