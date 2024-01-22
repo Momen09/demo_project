@@ -1,6 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:demo_project/view/map_widget.dart';
+import 'package:demo_project/view/osm_map.dart';
 import 'package:demo_project/view/reservation.dart';
+import 'package:demo_project/view/todo/TodoScreen.dart';
 import 'package:demo_project/view/widget/notification_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,44 +36,54 @@ class _MyHomePageState extends State<MyHomePage> {
               return _themeWidget(context, isDark);
             }),
             const Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Button1(
-                    context,
-                    isDark,
-                    size,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  button2(
-                    size: size,
-                    isDark: isDark,
-                    title: 'SHOW IOS TICKET',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  button2(
-                    size: size,
-                    isDark: isDark,
-                    title: 'SHOW MAP',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  button3(size: size, isDark: isDark),
-                  const NotificationWidget(),
-                  const Gap(10),
-                ],
-              ),
-            )
+            _homeButtons(context, isDark, size)
           ],
         ),
       ),
     );
+  }
+
+  Widget _homeButtons(BuildContext context, bool isDark, Size size) {
+    return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                Button1(
+                  context,
+                  isDark,
+                  size,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                button2(
+                  size: size,
+                  isDark: isDark,
+                  title: 'SHOW OSM',
+                  onPressed: () {
+                    Navigator.pushNamed(context, OsmMap.routeName);
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                button2(
+                  size: size,
+                  isDark: isDark,
+                  title: 'SHOW MAP',
+                  onPressed: () {
+                    Navigator.pushNamed(context, MapWidget.routeName);
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                button3(size: size, isDark: isDark),
+                const NotificationWidget(),
+                const Gap(10),
+              ],
+            ),
+          );
   }
 
   Widget _themeWidget(BuildContext context, bool isDark) {
@@ -146,7 +158,9 @@ class button3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, TodoScreen.routeName);
+      },
       style: ElevatedButton.styleFrom(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -172,18 +186,18 @@ class button2 extends StatelessWidget {
     required this.size,
     required bool isDark,
     required this.title,
+    required this.onPressed,
   }) : _isDark = isDark;
 
   final Size size;
   final bool _isDark;
   final String title;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () async {
-        Navigator.pushNamed(context, MapWidget.routeName);
-      },
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         // primary: Colors.white,

@@ -21,6 +21,14 @@ class KNetwork {
   static const mapId = 'mapbox/streets-v12';
 
   static const google_api_key = 'AIzaSyCKfTHmnbKYozxH7WQ6b36s7MBMPdr2i8k';
+
+  static const postUrl = 'http://api.nstack.in/v1/todos';
+
+  static const getUrl = 'http://api.nstack.in/v1/todos?page=1&limit=10';
+
+  static const deleteUrl = 'https://api.nstack.in/v1/todos/65a4f913d4832ba3638a22d6';
+
+
 }
 
 class SizeScreen {
@@ -33,5 +41,7 @@ class SizeScreen {
 
 class ApiUrl {
   static const apiUrl =
-      'https://qa-testing-backend-293b1363694d.herokuapp.com//api/v3/mobile-guests/user-events';
+      'https://qa-testing-backend-293b1363694d.herokuapp.com//';
+  static const EndPoint =
+      'api/v3/mobile-guests/user-events';
 }

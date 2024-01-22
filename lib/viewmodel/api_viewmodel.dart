@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:demo_project/constants/Network.dart';
+import 'package:demo_project/services/Network.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import '../model/reservation_model.dart';
@@ -19,6 +19,7 @@ class ReservationViewModel extends ChangeNotifier {
 
 
   Future<void> reservationData(response) async {
+    _viewState = ViewState.loading;
     final data =response;
     for (var reservation in data['reservations']) {
       _reservations.add(Reservation.fromJson(reservation));

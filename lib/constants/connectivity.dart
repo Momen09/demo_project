@@ -32,21 +32,24 @@
 //     super.notifyListeners();
 //   }
 // }
-
 import 'dart:async';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'enum.dart';
 
 
 
+
 class NetworkService extends ChangeNotifier {
-  StreamController<NetworkStatus> controller = StreamController();
+  StreamController<NetworkStatus> _controller = StreamController();
+  Stream<NetworkStatus> get networkStatusStream => _controller.stream;
+
 
   NetworkService() {
     Connectivity().onConnectivityChanged.listen((event) {
-      controller.add(_networkStatus(event));
+      _controller.add(_networkStatus(event));
+      notifyListeners();
     });
   }
 
@@ -57,6 +60,4 @@ class NetworkService extends ChangeNotifier {
         : NetworkStatus.offline;
   }
   notifyListeners();
-
-  
 }

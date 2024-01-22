@@ -56,9 +56,15 @@
 //   }
 // }
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_project/services/database_service.dart';
 import 'package:demo_project/view/map_widget.dart';
 import 'package:demo_project/view/my_home_page.dart';
+import 'package:demo_project/view/osm_map.dart';
 import 'package:demo_project/view/reservation.dart';
+import 'package:demo_project/view/todo/TodoScreen.dart';
+import 'package:demo_project/view/todo/todo_details.dart';
+import 'package:demo_project/viewmodel/TodoViewModel.dart';
 import 'package:demo_project/viewmodel/api_viewmodel.dart';
 import 'package:demo_project/viewmodel/firebase_api_viewmodel.dart';
 import 'package:demo_project/viewmodel/tracking_viewmodel.dart';
@@ -68,7 +74,6 @@ import 'package:provider/provider.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'constants/connectivity.dart';
 import 'constants/enum.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,7 +83,10 @@ Future<void> main() async {
           appId: '1:811505743152:android:e6c9d5324b8beee02584f5',
           messagingSenderId: '811505743152',
           projectId: 'fir-43577'));
-  await FirebaseApi().initNotifications();
+  FirebaseApi().initNotifications();
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+  );
   await AwesomeNotifications().initialize(null, [
     NotificationChannel(
         channelGroupKey: 'basic_channel_group',
@@ -111,9 +119,13 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ReservationViewModel()),
         ChangeNotifierProvider(create: (_) => TrackingViewModel()),
+        ChangeNotifierProvider(create: (_) => TodoViewModel()),
+        ChangeNotifierProvider(create: (_) => NetworkService()),
+        // ChangeNotifierProvider(create: (_) => DataBaseService()),
+
         // ChangeNotifierProvider(create: (_) => FirebaseApi()),
         StreamProvider(
-            create: (context) => NetworkService().controller.stream,
+            create: (context) => NetworkService().networkStatusStream,
             initialData: NetworkStatus.online)
       ],
       child: AdaptiveTheme(
@@ -127,12 +139,15 @@ class MyApp extends StatelessWidget {
         builder: (theme, darkTheme) => MaterialApp(
             theme: theme,
             darkTheme: darkTheme,
-            home: const MyHomePage(),
+            home: const TodoScreen(),
             debugShowCheckedModeBanner: false,
             routes: {
               ReservationScreen.routeName: (context) =>
                   const ReservationScreen(),
-              MapWidget.routeName: (context) => MapWidget(),
+              MapWidget.routeName: (context) => const MapWidget(),
+              TodoScreen.routeName: (context) => const TodoScreen(),
+              TodoDetails.routeName: (context) => const TodoDetails(),
+              OsmMap.routeName: (context) => const OsmMap(),
             }),
       ),
     );
