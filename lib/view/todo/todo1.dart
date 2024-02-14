@@ -12,7 +12,6 @@ class Todo1 extends StatefulWidget {
 }
 
 class _Todo1State extends State<Todo1> {
-  @override
   final Firebasee _firebase = Firebasee();
   final TextEditingController _titleTextEditingController =
   TextEditingController();
@@ -106,7 +105,7 @@ class _Todo1State extends State<Todo1> {
                       _firebase.addTodo1(Todo(
                         title: title,
                         description: description,
-                        isCompleted: false,
+                        isCompleted: false, id: '',
                       ));
 
                       Navigator.pop(context);

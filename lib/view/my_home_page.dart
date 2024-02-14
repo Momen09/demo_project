@@ -1,6 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:demo_project/view/map_widget.dart';
 import 'package:demo_project/view/osm_map.dart';
+import 'package:demo_project/view/pdf/pdf_screen.dart';
+import 'package:demo_project/view/pdf/signature_widget.dart';
 import 'package:demo_project/view/reservation.dart';
 import 'package:demo_project/view/todo/TodoScreen.dart';
 import 'package:demo_project/view/widget/notification_widget.dart';
@@ -64,6 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.pushNamed(context, OsmMap.routeName);
                   },
                 ),
+                button2(
+                  size: size,
+                  isDark: isDark,
+                  title: 'Viewer',
+                  onPressed: () {
+                    Navigator.pushNamed(context, Viewer.routeName);
+                  },
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -79,6 +89,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 10,
                 ),
                 button3(size: size, isDark: isDark),
+                const SizedBox(
+                  height: 10,
+                ),
+                button2(
+                  size: size,
+                  isDark: isDark,
+                  title: 'SHOW PDF',
+                  onPressed: () {
+                    Navigator.pushNamed(context,PDFScreen.routeName);
+                  },
+                ),
                 const NotificationWidget(),
                 const Gap(10),
               ],
@@ -169,7 +190,7 @@ class button3 extends StatelessWidget {
         shape: const RoundedRectangleBorder(),
       ),
       child: Text(
-        'OPEN ANDROID TICKET',
+        'Show Todo',
         style: TextStyle(
           color: _isDark ? Colors.black : Colors.white,
           fontSize: 15,

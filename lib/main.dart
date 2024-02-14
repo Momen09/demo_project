@@ -61,12 +61,15 @@ import 'package:demo_project/services/database_service.dart';
 import 'package:demo_project/view/map_widget.dart';
 import 'package:demo_project/view/my_home_page.dart';
 import 'package:demo_project/view/osm_map.dart';
+import 'package:demo_project/view/pdf/pdf_screen.dart';
+import 'package:demo_project/view/pdf/signature_widget.dart';
 import 'package:demo_project/view/reservation.dart';
 import 'package:demo_project/view/todo/TodoScreen.dart';
 import 'package:demo_project/view/todo/todo_details.dart';
 import 'package:demo_project/viewmodel/TodoViewModel.dart';
 import 'package:demo_project/viewmodel/api_viewmodel.dart';
 import 'package:demo_project/viewmodel/firebase_api_viewmodel.dart';
+import 'package:demo_project/viewmodel/pdf_viewmodel.dart';
 import 'package:demo_project/viewmodel/tracking_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +86,7 @@ Future<void> main() async {
           appId: '1:811505743152:android:e6c9d5324b8beee02584f5',
           messagingSenderId: '811505743152',
           projectId: 'fir-43577'));
-  FirebaseApi().initNotifications();
+   FirebaseApi().initNotifications();
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
   );
@@ -121,6 +124,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => TrackingViewModel()),
         ChangeNotifierProvider(create: (_) => TodoViewModel()),
         ChangeNotifierProvider(create: (_) => NetworkService()),
+        ChangeNotifierProvider(create: (_) => PdfViewModel()),
+
+
+
+
         // ChangeNotifierProvider(create: (_) => DataBaseService()),
 
         // ChangeNotifierProvider(create: (_) => FirebaseApi()),
@@ -139,7 +147,7 @@ class MyApp extends StatelessWidget {
         builder: (theme, darkTheme) => MaterialApp(
             theme: theme,
             darkTheme: darkTheme,
-            home: const TodoScreen(),
+            home:  const MyHomePage(),
             debugShowCheckedModeBanner: false,
             routes: {
               ReservationScreen.routeName: (context) =>
@@ -148,6 +156,9 @@ class MyApp extends StatelessWidget {
               TodoScreen.routeName: (context) => const TodoScreen(),
               TodoDetails.routeName: (context) => const TodoDetails(),
               OsmMap.routeName: (context) => const OsmMap(),
+              PDFScreen.routeName: (context) =>  PDFScreen(),
+              Viewer.routeName: (context) =>  const Viewer(),
+
             }),
       ),
     );

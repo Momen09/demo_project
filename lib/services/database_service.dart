@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project/model/todo_model.dart';
-import 'package:flutter/cupertino.dart';
 
 const String TODO_COLLECTION1_REF = 'todos';
 const String TODO_COLLECTION2_REF = 'todos2';

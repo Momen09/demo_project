@@ -1,7 +1,7 @@
-import 'dart:convert';
-import 'package:demo_project/services/Network.dart';
 import 'package:demo_project/constants/enum.dart';
 import 'package:demo_project/model/todo_model.dart';
+import 'package:demo_project/services/errors/dio_exceptions.dart';
+import 'package:demo_project/services/services/base_Network.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../constants/K_Network.dart';
@@ -19,73 +19,98 @@ class TodoViewModel extends ChangeNotifier {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  Future<Todo> postTodo() async {
-    _viewState = ViewState.loading;
-    final String title = titleController.text ?? '';
-    final String description = descriptionController.text ?? '';
-
-    final response = await dio.post(
-      KNetwork.postUrl,
-      data: jsonEncode({
-        'title': title,
-        'description': description,
-      }),
-      options: (Options(
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      )),
-    );
-    print('Response status code: ${response.statusCode}');
-    print('Response body: ${response.data}');
-
-    if (response.statusCode == 201) {
-      Todo createdTodo = Todo.fromJson(json.decode(response.data));
+  Future<Response> deleteTodo(String todoId) async {
+    try {
+      _viewState = ViewState.loading;
+      final response = await Api().apiCall(
+        '${KNetwork.deleteUrl}$todoId',
+        null,
+        null,
+        RequestType.DELETE,
+      );
       _viewState = ViewState.loaded;
+      _todo.removeWhere((element) => element.id == todoId);
+
+      // _todo.where((element) => )
       notifyListeners();
-      return createdTodo;
-    } else {
+      return response;
+    } on DioError catch (e) {
+      var error = ApiException.fromDioError(e);
       _viewState = ViewState.error;
       notifyListeners();
-      throw Exception('Unexpected response format');
+      throw error.errorMessage;
     }
   }
 
-  // Future<void> postTodo() async {
-  //   try {
-  //     _viewState = ViewState.loading;
-  //     notifyListeners();
-  //
-  //     NetworkRequests apiService = NetworkRequests();
-  //     await apiService.postNetworkTodos();
-  //     _viewState = ViewState.loaded;
-  //     notifyListeners();
-  //   } catch (e) {
-  //     _viewState = ViewState.error;
-  //     notifyListeners();
-  //     rethrow;
-  //   }
-  // }
-
-  Future<List<Todo>> getTodos() async {
+  Future<Todo> postTodo() async {
     _viewState = ViewState.loading;
-    notifyListeners();
-    NetworkRequests apiService = NetworkRequests();
-    _todo = await apiService.fetchTodos();
-    _viewState = ViewState.loaded;
-    notifyListeners();
-    return _todo;
+    try {
+      final String title = titleController.text ?? '';
+      final String description = descriptionController.text ?? '';
+      final response = await Api().apiCall(
+        KNetwork.postUrl,
+        null,
+        {
+          'title': title,
+          'description': description,
+        },
+        RequestType.POST,
+      );
+      Todo createdTodo = Todo.fromJson(response.data["data"]);
+      _todo.add(createdTodo);
+      _viewState = ViewState.loaded;
+      notifyListeners();
+      return createdTodo;
+    } on DioError catch (e) {
+      _viewState = ViewState.error;
+      notifyListeners();
+      var error = ApiException.fromDioError(e);
+      throw error.errorMessage;
+    }
   }
 
-/*  Future<void> deleteTodo(int todoId) async {
+  Future<List<Todo>?> getTodo(BuildContext context) async {
     _viewState = ViewState.loading;
-    notifyListeners();
+    try {
+      final response = await Api().apiCall(
+        KNetwork.getUrl,
+        null,
+        null,
+        RequestType.GET,
+      );
+      List<dynamic> todoData = response.data['items'];
+      _todo = todoData.map((data) => Todo.fromJson(data)).toList();
+      _viewState = ViewState.loaded;
+      notifyListeners();
+      return _todo;
+    } on DioError catch (e) {
+      _viewState = ViewState.error;
+      notifyListeners();
 
-    NetworkRequests apiService = NetworkRequests();
-
-      Future<http.Response> deleteResponse = await apiService.deleteNetworkTodos();
-        _todo.removeWhere((todo) => todo.id == todoId);
-    _viewState = ViewState.loaded;
-    notifyListeners();
-  }*/
+      var error = ApiException.fromDioError(e);
+      print(error.errorMessage);
+      _showErrorDialog(error.errorMessage, context);
+    }
+  }
+  void _showErrorDialog(String errorMessage,BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Error'),
+        content: Text(errorMessage),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: Text('OK'),
+          ),
+        ],
+      );
+    },
+    );
+  }
 }
+
+

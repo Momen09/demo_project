@@ -106,7 +106,7 @@ class _Todo3State extends State<Todo3> {
                       _firebase.addTodo3(Todo(
                         title: title,
                         description: description,
-                        isCompleted: false,
+                        isCompleted: false, id: '',
                       ));
 
                       Navigator.pop(context);

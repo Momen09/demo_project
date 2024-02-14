@@ -56,12 +56,15 @@ class ReservationViewModel extends ChangeNotifier {
       final response = await NetworkRequests.DioNetwork();
       final jsonString = jsonEncode(response.data);
       log("API Response: $jsonString");
-      await reservationData(response.data);
-    } catch (e) {
+      // if (response.data) {
+        await reservationData(response.data);
+      // } else {
+      //   log('API response data has unexpected type: ${response.data.runtimeType}');
+      // }
+  } catch (e) {
       if (e is DioError) {
         if (e.response?.statusCode == 401) {
           log('Authentication error: Unauthorized');
-          // Handle unauthorized error, e.g., redirect to login screen
         } else {
           log('DioError: $e');
         }

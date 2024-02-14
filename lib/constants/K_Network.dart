@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class KNetwork {
+  static const pdfUrl = 'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
   static const photo = 'assets/images/';
   static const token =
       'eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MzAzLCJ0eXBlIjoidXNlciIsInJhbiI6IkJORU5WSVBOTlFUWVB'
@@ -22,11 +23,11 @@ class KNetwork {
 
   static const google_api_key = 'AIzaSyCKfTHmnbKYozxH7WQ6b36s7MBMPdr2i8k';
 
-  static const postUrl = 'http://api.nstack.in/v1/todos';
+  static const postUrl = 'https://api.nstack.in/v1/todos';
 
-  static const getUrl = 'http://api.nstack.in/v1/todos?page=1&limit=10';
+  static const getUrl = 'https://api.nstack.in/v1/todos?page=1&limit=20';
 
-  static const deleteUrl = 'https://api.nstack.in/v1/todos/65a4f913d4832ba3638a22d6';
+  static const deleteUrl = 'https://api.nstack.in/v1/todos/';
 
 
 }
