@@ -77,6 +77,11 @@ dependencies:
   open_file: ^3.3.2
   image: ^4.1.7
   http:
+  draggable_widget: ^2.0.0
+  permission_handler:
+  image_gallery_saver: ^2.0.3
+  pdf: ^3.10.7
+  flutter_signature_pad: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -93,7 +98,8 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/pdf/certificate.pfx
+    - assets/certificate.pfx
+    - assets/pdf/flutter.pdf
 
 
   # example:

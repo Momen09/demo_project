@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   isDark: isDark,
                   title: 'SHOW PDF',
                   onPressed: () {
-                    Navigator.pushNamed(context,PDFScreen.routeName);
+                    // Navigator.pushNamed(context,PDFScreen.routeName);
                   },
                 ),
                 const NotificationWidget(),

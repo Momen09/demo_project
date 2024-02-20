@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class KNetwork {
   static const pdfUrl = 'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf';
+  static const pdfAsset = 'assets/pdf/flutter.pdf';
   static const photo = 'assets/images/';
   static const token =
       'eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MzAzLCJ0eXBlIjoidXNlciIsInJhbiI6IkJORU5WSVBOTlFUWVB'

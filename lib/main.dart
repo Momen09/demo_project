@@ -156,7 +156,7 @@ class MyApp extends StatelessWidget {
               TodoScreen.routeName: (context) => const TodoScreen(),
               TodoDetails.routeName: (context) => const TodoDetails(),
               OsmMap.routeName: (context) => const OsmMap(),
-              PDFScreen.routeName: (context) =>  PDFScreen(),
+              // PDFScreen.routeName: (context) =>  PDFScreen(),
               Viewer.routeName: (context) =>  const Viewer(),
 
             }),
